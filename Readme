@@ -16,11 +16,13 @@ This repository demonstrates a minimal quantum circuit simulator written in Pyth
 - Enhanced noise models including amplitude and phase damping
 - Toy quantum autoencoder with a gradient-based trainer
 - Noise-aware orchestrator for distributed execution
+- Partial measurement utilities for entanglement protocols
 - Example algorithms:
   - Shor's factoring method (`src/shor.py`)
   - Grover's search demo (`src/grover_example.py`)
   - Phase estimation demo (`src/phase_estimation_example.py`)
     with configurable iteration count
+  - Quantum teleportation demonstration (`src/teleportation_example.py`)
 
 ## Running
 
@@ -31,6 +33,7 @@ pip install numpy==1.26.4
 python3 src/shor.py        # Shor's algorithm
 python3 src/grover_example.py  # Grover's search
 python3 src/phase_estimation_example.py  # Phase estimation
+python3 src/teleportation_example.py  # Teleportation demo
 ```
 
 The simulator handles only very small integers but forms the basis for more sophisticated experiments.

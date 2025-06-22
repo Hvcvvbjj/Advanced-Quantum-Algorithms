@@ -95,6 +95,53 @@ class QuantumCircuit:
         result = self.measure()
         return bin(result)[2:].zfill(self.num_qubits)
 
+    def measure_qubits(self, qubits):
+        """Measure ``qubits`` and collapse state accordingly.
+
+        Parameters
+        ----------
+        qubits : iterable[int]
+            Indices of the qubits to measure. Qubit ``0`` is the least
+            significant bit of the computational basis index.
+
+        Returns
+        -------
+        str
+            Bitstring of measurement results ordered according to
+            ``qubits``.
+        """
+        qubits = list(qubits)
+        n_out = len(qubits)
+
+        # Build probability distribution for the specified qubits
+        probs = np.zeros(2 ** n_out, dtype=float)
+        for idx, amp in enumerate(self.state):
+            outcome = 0
+            for i, q in enumerate(qubits):
+                bit = (idx >> q) & 1
+                outcome |= bit << i
+            probs[outcome] += abs(amp) ** 2
+
+        outcome = np.random.choice(len(probs), p=probs)
+
+        # Collapse state to the observed outcome
+        mask = np.zeros_like(self.state, dtype=bool)
+        for idx in range(len(self.state)):
+            obs = 0
+            for i, q in enumerate(qubits):
+                bit = (idx >> q) & 1
+                obs |= bit << i
+            if obs == outcome:
+                mask[idx] = True
+        new_state = np.where(mask, self.state, 0)
+        norm = np.linalg.norm(new_state)
+        if norm != 0:
+            new_state /= norm
+        self.state = new_state
+
+        bits = [(outcome >> i) & 1 for i in range(n_out)]
+        return "".join(str(b) for b in bits)
+
     def probabilities(self):
         """Return the probability of each computational basis state."""
         return np.abs(self.state) ** 2
