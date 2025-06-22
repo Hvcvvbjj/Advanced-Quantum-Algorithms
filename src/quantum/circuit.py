@@ -88,3 +88,7 @@ class QuantumCircuit:
         """Return a bitstring measurement of the entire register."""
         result = self.measure()
         return bin(result)[2:].zfill(self.num_qubits)
+
+    def probabilities(self):
+        """Return the probability of each computational basis state."""
+        return np.abs(self.state) ** 2
