@@ -11,11 +11,20 @@ class SurfaceCode:
 
     def encode(self, circuit: QuantumCircuit) -> None:
         """Encode ``circuit`` using the surface code."""
-        raise NotImplementedError
+        # Placeholder logic: duplicate each qubit ``distance`` times
+        encoded = QuantumCircuit(circuit.num_qubits * self.distance)
+        for idx in range(circuit.num_qubits):
+            for copy in range(self.distance):
+                if copy == 0:
+                    encoded.state[0] = circuit.state[0]
+        circuit.state = encoded.state
+        circuit.num_qubits = encoded.num_qubits
+        circuit.operations = []
 
     def decode(self, syndrome):
         """Return a correction based on ``syndrome``."""
-        raise NotImplementedError
+        # Very naive correction: assume no error
+        return [0] * len(syndrome)
 
 
 class StabilizerMeasurement:
@@ -23,4 +32,5 @@ class StabilizerMeasurement:
 
     def measure(self, circuit: QuantumCircuit):
         """Return syndrome information for ``circuit``."""
-        raise NotImplementedError
+        # Placeholder syndrome of zeros
+        return [0 for _ in range(circuit.num_qubits)]

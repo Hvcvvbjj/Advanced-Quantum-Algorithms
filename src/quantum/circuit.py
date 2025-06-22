@@ -27,11 +27,14 @@ class QuantumCircuit:
         self.num_qubits = num_qubits
         self.state = np.zeros(2 ** num_qubits, dtype=complex)
         self.state[0] = 1
+        # Track operations for potential compilation or analysis
+        self.operations = []
 
     def apply_gate(self, gate, qubits):
         """Apply a gate to the specified qubits."""
         for q in qubits:
             self.state = apply_single_qubit_gate(self.state, gate, q, self.num_qubits)
+        self.operations.append(("gate", gate, list(qubits)))
 
     def apply_two_qubit_gate(self, gate, control, target):
         """Apply a two-qubit gate like CNOT.
@@ -55,6 +58,7 @@ class QuantumCircuit:
         inv_axes = np.argsort(axes)
         state = np.transpose(state, inv_axes)
         self.state = state.reshape(2 ** n)
+        self.operations.append(("two_qubit", gate, control, target))
 
     def apply_controlled_gate(self, gate, control, target):
         """Apply a controlled single-qubit gate.
@@ -74,10 +78,12 @@ class QuantumCircuit:
                               [0, 0, gate[0, 0], gate[0, 1]],
                               [0, 0, gate[1, 0], gate[1, 1]]], dtype=complex)
         self.apply_two_qubit_gate(cnot_like, control, target)
+        self.operations.append(("controlled", gate, control, target))
 
     def apply_unitary(self, unitary):
         """Apply a full unitary matrix to the state."""
         self.state = unitary @ self.state
+        self.operations.append(("unitary", unitary))
 
     def measure(self):
         """Sample from the quantum state distribution."""
