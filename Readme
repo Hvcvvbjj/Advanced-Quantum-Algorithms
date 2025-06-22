@@ -10,15 +10,16 @@ This repository demonstrates a minimal quantum circuit simulator written in Pyth
 - Controlled modular exponentiation (placeholder logic)
 - Example algorithms:
   - Shor's factoring method (`src/shor.py`)
-  - Grover's search skeleton (`src/algorithms/grover.py`)
+  - Grover's search demo (`src/grover_example.py`)
 
 ## Running
 
-Install the dependency and execute the Shor example:
+Install the dependency and execute the examples:
 
 ```bash
 pip install numpy==1.26.4
-python3 src/shor.py
+python3 src/shor.py        # Shor's algorithm
+python3 src/grover_example.py  # Grover's search
 ```
 
 The simulator handles only very small integers but forms the basis for more sophisticated experiments.
