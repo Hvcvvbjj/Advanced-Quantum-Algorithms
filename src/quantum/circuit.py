@@ -56,6 +56,25 @@ class QuantumCircuit:
         state = np.transpose(state, inv_axes)
         self.state = state.reshape(2 ** n)
 
+    def apply_controlled_gate(self, gate, control, target):
+        """Apply a controlled single-qubit gate.
+
+        Parameters
+        ----------
+        gate: np.ndarray
+            2x2 unitary applied to ``target`` when ``control`` is |1>.
+        control: int
+            Index of the control qubit.
+        target: int
+            Index of the target qubit.
+        """
+        n = self.num_qubits
+        cnot_like = np.array([[1, 0, 0, 0],
+                              [0, 1, 0, 0],
+                              [0, 0, gate[0, 0], gate[0, 1]],
+                              [0, 0, gate[1, 0], gate[1, 1]]], dtype=complex)
+        self.apply_two_qubit_gate(cnot_like, control, target)
+
     def apply_unitary(self, unitary):
         """Apply a full unitary matrix to the state."""
         self.state = unitary @ self.state
@@ -64,3 +83,8 @@ class QuantumCircuit:
         """Sample from the quantum state distribution."""
         probabilities = np.abs(self.state) ** 2
         return np.random.choice(len(probabilities), p=probabilities)
+
+    def measure_all(self):
+        """Return a bitstring measurement of the entire register."""
+        result = self.measure()
+        return bin(result)[2:].zfill(self.num_qubits)

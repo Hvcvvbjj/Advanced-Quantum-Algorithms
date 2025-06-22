@@ -5,8 +5,8 @@ import numpy as np
 from quantum import QuantumCircuit, H
 
 
-def grover_search(num_qubits, oracle_fn):
-    """Return circuit state after a single Grover iteration.
+def grover_search(num_qubits, oracle_fn, iterations=None):
+    """Return circuit state after a number of Grover iterations.
 
     Parameters
     ----------
@@ -17,20 +17,22 @@ def grover_search(num_qubits, oracle_fn):
     """
     qc = QuantumCircuit(num_qubits)
 
+    if iterations is None:
+        iterations = int(np.floor(np.pi / 4 * np.sqrt(2 ** num_qubits)))
+
     # Prepare uniform superposition
     for q in range(num_qubits):
         qc.apply_gate(H, [q])
 
-    # Oracle phase flip
-    for idx in range(2 ** num_qubits):
-        if oracle_fn(idx):
-            qc.state[idx] *= -1
-
-    # Diffusion operator
     size = 2 ** num_qubits
     psi0 = np.ones(size) / np.sqrt(size)
     diffusion = 2 * np.outer(psi0, psi0) - np.eye(size)
-    qc.apply_unitary(diffusion)
+
+    for _ in range(iterations):
+        for idx in range(size):
+            if oracle_fn(idx):
+                qc.state[idx] *= -1
+        qc.apply_unitary(diffusion)
 
     return qc
 
@@ -44,8 +46,8 @@ def example_usage():
         return index == target
 
     qc = grover_search(2, oracle)
-    result = qc.measure()
-    print(f"Grover search result: {result}")
+    bitstring = qc.measure_all()
+    print(f"Grover search result: {bitstring}")
 
 
 if __name__ == "__main__":

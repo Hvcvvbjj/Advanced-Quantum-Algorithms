@@ -1,6 +1,6 @@
 """Quantum computing utilities for custom algorithms."""
 
-from .gates import H, X, I, CNOT
+from .gates import H, X, I, CNOT, S, T
 from .circuit import QuantumCircuit
 
-__all__ = ["H", "X", "I", "CNOT", "QuantumCircuit"]
+__all__ = ["H", "X", "I", "CNOT", "S", "T", "QuantumCircuit"]

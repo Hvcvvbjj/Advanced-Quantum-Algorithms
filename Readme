@@ -6,11 +6,14 @@ This repository demonstrates a minimal quantum circuit simulator written in Pyth
 
 - Quantum state representation via complex vectors
 - Basic gates and a simple `QuantumCircuit` abstraction
+- Additional gates (`S`, `T`) and controlled operations
+- Register-wide measurement utilities
 - Quantum Fourier Transform utilities
 - Controlled modular exponentiation (placeholder logic)
 - Example algorithms:
   - Shor's factoring method (`src/shor.py`)
   - Grover's search demo (`src/grover_example.py`)
+    with configurable iteration count
 
 ## Running
 
