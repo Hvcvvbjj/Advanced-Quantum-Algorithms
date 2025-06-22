@@ -6,7 +6,7 @@ techniques such as machine-learning–based circuit synthesis and real-time
 error mitigation.  Only the high level API is provided for now.
 """
 
-from .orchestrator import QuantumOrchestrator
+from .orchestrator import QuantumOrchestrator, SimulatedDevice
 from .qnn import QuantumNeuralNetwork
 from .advanced_scheduling import Scheduler
 from .autoencoder import QuantumAutoencoder
@@ -14,6 +14,7 @@ from .synergy import HybridRuntime
 
 __all__ = [
     "QuantumOrchestrator",
+    "SimulatedDevice",
     "QuantumNeuralNetwork",
     "Scheduler",
     "QuantumAutoencoder",
