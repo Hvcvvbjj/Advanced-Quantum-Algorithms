@@ -1,33 +1,24 @@
-# Advanced Quantum Algorithm
-r33xat-design-complex-legendary-programming-challenge
+# Advanced Quantum Algorithms
 
-This repository demonstrates a simplified implementation of Shor's factoring algorithm using a minimal quantum circuit simulator written in Python. The code is intended as a reference for educational purposes and showcases components such as:
+This repository demonstrates a minimal quantum circuit simulator written in Python. The focus is on clarity rather than performance and includes an implementation of Shor's factoring algorithm.
 
-- Quantum state representation via complex vectors
-- Quantum Fourier Transform (QFT) and its inverse
-- Controlled modular exponentiation (placeholder logic for the simulation)
-- Period finding to derive non-trivial factors of composite numbers
-
-Run the example with:
-
-```bash
-python3 src/shor.py
-```
-
-The simulator is not optimized for performance and only handles very small integers, but highlights the core steps behind Shor's algorithm.
-
-This repository demonstrates a simplified implementation of Shor's factoring algorithm using a minimal quantum circuit simulator written in Python. The code is intended as a reference for educational purposes and showcases components such as:
+## Features
 
 - Quantum state representation via complex vectors
-- Quantum Fourier Transform (QFT) and its inverse
-- Controlled modular exponentiation (placeholder logic for the simulation)
-- Period finding to derive non-trivial factors of composite numbers
+- Basic gates and a simple `QuantumCircuit` abstraction
+- Quantum Fourier Transform utilities
+- Controlled modular exponentiation (placeholder logic)
+- Example algorithms:
+  - Shor's factoring method (`src/shor.py`)
+  - Grover's search skeleton (`src/algorithms/grover.py`)
 
-Run the example with:
+## Running
+
+Install the dependency and execute the Shor example:
 
 ```bash
 pip install numpy==1.26.4
 python3 src/shor.py
 ```
 
-The simulator is not optimized for performance and only handles very small integers, but highlights the core steps behind Shor's algorithm.
+The simulator handles only very small integers but forms the basis for more sophisticated experiments.
