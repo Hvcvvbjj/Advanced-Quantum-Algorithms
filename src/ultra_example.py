@@ -12,14 +12,17 @@ from quantum.advanced.noise_models import AmplitudeDamping
 
 def main():
     oracle = lambda idx: idx == 3  # search for |11>
-    circuit = grover_search(2, oracle)
+    circuit1 = grover_search(2, oracle)
+    circuit2 = grover_search(2, oracle)
 
     orchestrator = QuantumOrchestrator()
-    device = SimulatedDevice(noise_model=AmplitudeDamping(0.2))
-    orchestrator.register_device(device)
+    device_a = SimulatedDevice(noise_model=AmplitudeDamping(0.2), noise_level=0.2)
+    device_b = SimulatedDevice(noise_model=AmplitudeDamping(0.1), noise_level=0.1)
+    orchestrator.register_device(device_a)
+    orchestrator.register_device(device_b)
 
-    result = orchestrator.run(circuit)
-    print(f"Noisy Grover result: {result}")
+    results = orchestrator.run_batch([circuit1, circuit2])
+    print(f"Noisy Grover results: {results}")
 
 
 if __name__ == "__main__":
