@@ -31,3 +31,25 @@ class Optimizer:
             minus[i] -= 1e-3
             grads[i] = (objective_fn(plus) - objective_fn(minus)) / 2e-3
         return params - lr * grads
+
+
+class VariationalQuantumEigensolver:
+    """Estimate ground state energy of ``hamiltonian`` using variational ansatz."""
+
+    def __init__(self, ansatz: VariationalCircuit, hamiltonian: np.ndarray, optimizer=None, iterations: int = 100):
+        self.ansatz = ansatz
+        self.hamiltonian = hamiltonian
+        self.optimizer = optimizer or Optimizer()
+        self.iterations = iterations
+
+    def _energy(self, params):
+        self.ansatz.parameters = list(params)
+        circuit = self.ansatz.construct()
+        return np.real(circuit.expectation(self.hamiltonian))
+
+    def run(self) -> float:
+        params = np.array(self.ansatz.parameters, dtype=float)
+        for _ in range(self.iterations):
+            params = self.optimizer.step(self._energy, params)
+        self.ansatz.parameters = list(params)
+        return self._energy(params)

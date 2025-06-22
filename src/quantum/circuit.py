@@ -98,3 +98,9 @@ class QuantumCircuit:
     def probabilities(self):
         """Return the probability of each computational basis state."""
         return np.abs(self.state) ** 2
+
+    def expectation(self, observable: np.ndarray) -> complex:
+        """Return expectation value of ``observable`` for the current state."""
+        if observable.shape != (2 ** self.num_qubits, 2 ** self.num_qubits):
+            raise ValueError("observable dimension mismatch")
+        return self.state.conj() @ (observable @ self.state)

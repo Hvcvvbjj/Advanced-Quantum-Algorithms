@@ -11,6 +11,11 @@ This repository demonstrates a minimal quantum circuit simulator written in Pyth
 - Quantum Fourier Transform utilities
 - Controlled modular exponentiation (placeholder logic)
 - Small phase estimation routine
+- Expectation value evaluation for arbitrary observables
+- Variational quantum eigensolver example components
+- Enhanced noise models including amplitude and phase damping
+- Toy quantum autoencoder with a gradient-based trainer
+- Noise-aware orchestrator for distributed execution
 - Example algorithms:
   - Shor's factoring method (`src/shor.py`)
   - Grover's search demo (`src/grover_example.py`)

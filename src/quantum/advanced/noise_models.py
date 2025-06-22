@@ -56,3 +56,25 @@ class AmplitudeDamping(NoiseModel):
                     damped[idx & ~(1 << q)] += sqrt_decay * amp
             state = damped
         circuit.state = state
+
+
+class PhaseDamping(NoiseModel):
+    """Dephase qubits by reducing off-diagonal coherence."""
+
+    def __init__(self, lam: float):
+        if not 0.0 <= lam <= 1.0:
+            raise ValueError("lam must be between 0 and 1")
+        self.lam = lam
+
+    def apply(self, circuit: QuantumCircuit) -> None:
+        n = circuit.num_qubits
+        dim = 2 ** n
+        rho = np.outer(circuit.state, circuit.state.conjugate())
+        for q in range(n):
+            for i in range(dim):
+                for j in range(dim):
+                    if ((i ^ j) >> q) & 1:
+                        rho[i, j] *= 1 - self.lam
+        vals, vecs = np.linalg.eigh(rho)
+        idx = np.argmax(vals)
+        circuit.state = vecs[:, idx] * np.sqrt(vals[idx])

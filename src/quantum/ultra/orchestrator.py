@@ -19,7 +19,7 @@ class QuantumOrchestrator:
         device has been registered the circuit is simply measured locally.
         """
         if self.devices:
-            device = self.devices[0]
+            device = min(self.devices, key=lambda d: getattr(d, "noise_level", 0))
             return device.execute(circuit)
         return circuit.measure_all()
 
@@ -27,8 +27,9 @@ class QuantumOrchestrator:
 class SimulatedDevice:
     """Minimal device executing circuits inside the current process."""
 
-    def __init__(self, noise_model=None):
+    def __init__(self, noise_model=None, noise_level: float = 0.0):
         self.noise_model = noise_model
+        self.noise_level = noise_level
 
     def execute(self, circuit):
         if self.noise_model is not None:
