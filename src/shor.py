@@ -17,12 +17,23 @@ CNOT = np.array([[1, 0, 0, 0],
                  [0, 1, 0, 0],
                  [0, 0, 0, 1],
                  [0, 0, 1, 0]], dtype=complex)
-
+def apply_single_qubit_gate(state, gate, qubit, n):
+    """Apply a single-qubit gate without constructing full 2^n matrix."""
+    state = state.reshape([2] * n)
+    state = np.moveaxis(state, qubit, 0)
+    state = (gate @ state.reshape(2, -1)).reshape([2] + [2] * (n - 1))
+    state = np.moveaxis(state, 0, qubit)
+    return state.reshape(2 ** n)
+def apply_gate(state, gate, qubits, n):
+    """Apply gate to each specified qubit."""
+    for q in qubits:
+        state = apply_single_qubit_gate(state, gate, q, n)
+    return state
+def qft_matrix(n):
+    """Return the QFT matrix for n qubits (used only for small n)."""
 def tensor(*matrices):
     """Kronecker product of a list of matrices."""
     return reduce(np.kron, matrices)
-
-
 def apply_gate(state, gate, qubits, n):
     """Apply quantum gate to specific qubits of n-qubit state."""
     gates = []
@@ -33,8 +44,6 @@ def apply_gate(state, gate, qubits, n):
             gates.append(I)
     U = tensor(*gates)
     return U @ state
-
-
 def qft(n):
     """Quantum Fourier Transform matrix for n qubits."""
     N = 2 ** n
@@ -44,11 +53,31 @@ def qft(n):
         for j in range(N):
             F[i, j] = omega ** (i * j)
     return F / np.sqrt(N)
-
-
+def inverse_qft_matrix(n):
+    """Inverse QFT matrix."""
+    return np.conjugate(qft_matrix(n).T)
+def swap_qubits(state, q1, q2, n):
+    state = state.reshape([2] * n)
+    state = np.swapaxes(state, q1, q2)
+    return state.reshape(2 ** n)
+def apply_controlled_phase(state, control, target, angle, n):
+    indices = np.arange(len(state))
+    mask = ((indices >> control) & 1) & ((indices >> target) & 1)
+    state[mask] *= np.exp(1j * angle)
+    return state
+def apply_inverse_qft(state, n, total_qubits):
+    for q in range(n // 2):
+        state = swap_qubits(state, q, n - q - 1, total_qubits)
+    for j in range(n):
+        for k in range(j):
+            angle = -np.pi / (2 ** (j - k))
+            state = apply_controlled_phase(state, k, j, angle, total_qubits)
+        state = apply_single_qubit_gate(state, H, j, total_qubits)
+    return state
 def inverse_qft(n):
     """Inverse Quantum Fourier Transform matrix."""
     return np.conjugate(qft(n).T)
+
 
 
 def apply_controlled_modexp(state, a, N, n, exponent):
@@ -97,6 +126,7 @@ def period_finding(a, N):
         state = apply_controlled_modexp(state, pow(a, 2 ** i, N), N, n, exponent=True)
 
     # Apply inverse QFT to the first n qubits
+    state = apply_inverse_qft(state, n, 2 * n)
     F_inv = inverse_qft(n)
     state = (tensor(F_inv, np.eye(2 ** n)) @ state)
 
@@ -141,4 +171,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
