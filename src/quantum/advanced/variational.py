@@ -1,5 +1,7 @@
 """Templates for variational quantum algorithms."""
 
+import numpy as np
+from quantum import QuantumCircuit, RZ
 
 class VariationalCircuit:
     """Base class for parameterized circuits."""
@@ -10,11 +12,22 @@ class VariationalCircuit:
 
     def construct(self):
         """Construct the circuit using current parameters."""
-        raise NotImplementedError
+        qc = QuantumCircuit(self.num_qubits)
+        for i, theta in enumerate(self.parameters):
+            qc.apply_gate(RZ(theta), [i % self.num_qubits])
+        return qc
 
 
 class Optimizer:
     """Simple optimizer interface for variational circuits."""
 
     def step(self, objective_fn, params):
-        raise NotImplementedError
+        lr = 0.1
+        grads = np.zeros_like(params, dtype=float)
+        for i in range(len(params)):
+            plus = params.copy()
+            minus = params.copy()
+            plus[i] += 1e-3
+            minus[i] -= 1e-3
+            grads[i] = (objective_fn(plus) - objective_fn(minus)) / 2e-3
+        return params - lr * grads

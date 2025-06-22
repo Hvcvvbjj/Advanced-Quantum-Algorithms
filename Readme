@@ -31,4 +31,7 @@ python3 src/phase_estimation_example.py  # Phase estimation
 The simulator handles only very small integers but forms the basis for more sophisticated experiments.
 
 An experimental skeleton for a cutting-edge quantum framework lives under
-`src/quantum/advanced` and will be extended in future work.
+`src/quantum/advanced`.  Basic components for compilation, error correction,
+noise modelling and variational circuits are now stubbed out.  A far more
+ambitious blueprint can be found in `src/quantum/ultra`, outlining a
+distributed, ML-driven quantum stack to be implemented in the future.
