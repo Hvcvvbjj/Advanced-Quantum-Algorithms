@@ -10,9 +10,11 @@ This repository demonstrates a minimal quantum circuit simulator written in Pyth
 - Register-wide measurement utilities
 - Quantum Fourier Transform utilities
 - Controlled modular exponentiation (placeholder logic)
+- Small phase estimation routine
 - Example algorithms:
   - Shor's factoring method (`src/shor.py`)
   - Grover's search demo (`src/grover_example.py`)
+  - Phase estimation demo (`src/phase_estimation_example.py`)
     with configurable iteration count
 
 ## Running
@@ -23,6 +25,10 @@ Install the dependency and execute the examples:
 pip install numpy==1.26.4
 python3 src/shor.py        # Shor's algorithm
 python3 src/grover_example.py  # Grover's search
+python3 src/phase_estimation_example.py  # Phase estimation
 ```
 
 The simulator handles only very small integers but forms the basis for more sophisticated experiments.
+
+An experimental skeleton for a cutting-edge quantum framework lives under
+`src/quantum/advanced` and will be extended in future work.

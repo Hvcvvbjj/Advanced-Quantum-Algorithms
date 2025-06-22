@@ -12,3 +12,10 @@ I = np.eye(2, dtype=complex)
 S = np.array([[1, 0], [0, 1j]], dtype=complex)
 T = np.array([[1, 0], [0, np.exp(1j * np.pi / 4)]], dtype=complex)
 
+
+def RZ(theta: float) -> np.ndarray:
+    """Return a rotation about the Z axis by ``theta`` radians."""
+    return np.array(
+        [[np.exp(-1j * theta / 2), 0], [0, np.exp(1j * theta / 2)]], dtype=complex
+    )
+
