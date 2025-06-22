@@ -8,7 +8,12 @@ class NoiseModel:
     """Base class for circuit noise models."""
 
     def apply(self, circuit: QuantumCircuit) -> None:
-        raise NotImplementedError
+        """Apply the noise model to ``circuit`` in place.
+
+        The base implementation performs no modification and allows derived
+        classes to override this method.
+        """
+        pass
 
 
 class DepolarizingChannel(NoiseModel):
