@@ -1,6 +1,6 @@
 """Quantum computing utilities for custom algorithms."""
 
-from .gates import H, X, I, CNOT, S, T, RZ
+from .gates import H, X, Z, I, CNOT, S, T, RZ
 from .circuit import QuantumCircuit
 from .advanced import (
     QuantumCompiler,
@@ -8,8 +8,11 @@ from .advanced import (
     StabilizerMeasurement,
     NoiseModel,
     DepolarizingChannel,
+    AmplitudeDamping,
+    PhaseDamping,
     VariationalCircuit,
     Optimizer,
+    VariationalQuantumEigensolver,
 )
 from .ultra import (
     QuantumOrchestrator,
@@ -22,6 +25,7 @@ from .ultra import (
 __all__ = [
     "H",
     "X",
+    "Z",
     "I",
     "CNOT",
     "S",
@@ -33,8 +37,11 @@ __all__ = [
     "StabilizerMeasurement",
     "NoiseModel",
     "DepolarizingChannel",
+    "AmplitudeDamping",
+    "PhaseDamping",
     "VariationalCircuit",
     "Optimizer",
+    "VariationalQuantumEigensolver",
     "QuantumOrchestrator",
     "QuantumNeuralNetwork",
     "Scheduler",
