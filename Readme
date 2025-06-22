@@ -1,1 +1,17 @@
+# Advanced Quantum Algorithm
+
+This repository demonstrates a simplified implementation of Shor's factoring algorithm using a minimal quantum circuit simulator written in Python. The code is intended as a reference for educational purposes and showcases components such as:
+
+- Quantum state representation via complex vectors
+- Quantum Fourier Transform (QFT) and its inverse
+- Controlled modular exponentiation (placeholder logic for the simulation)
+- Period finding to derive non-trivial factors of composite numbers
+
+Run the example with:
+
+```bash
+python3 src/shor.py
+```
+
+The simulator is not optimized for performance and only handles very small integers, but highlights the core steps behind Shor's algorithm.
 
